@@ -3,17 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Family Budget App</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Family Budget Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <header>
-        <h1>Our Family Budget</h1>
-    </header>
+<body class="bg-gray-100 text-gray-800 font-sans antialiased p-4 md:p-8">
 
-    <main>
-        <h2>Add an Expense</h2>
-    </main>
+    <div class="max-w-5xl mx-auto space-y-6">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 tracking-tight">2025 Family Budget</h1>
+            <p class="text-gray-500 mt-2">Track receipts, live balances, and shared expenses.</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col items-center">
+                <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Total Income</h3>
+                <p class="text-2xl font-bold text-green-600 mt-2" id="display-total-income">£4,903.44</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col items-center">
+                <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Shared Outgoings</h3>
+                <p class="text-2xl font-bold text-red-500 mt-2">£2,981.38</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col items-center">
+                <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Total Left</h3>
+                <p class="text-2xl font-bold text-blue-600 mt-2" id="display-total-left">£1,922.06</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
+                <h2 class="text-xl font-bold text-gray-800 border-b pb-2">The Split</h2>
+                <div class="flex justify-between items-center py-2">
+                    <div>
+                        <h3 class="font-bold text-gray-700">Mark</h3>
+                        <p class="text-sm text-gray-500">Contribution: £1,650.00</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="block text-sm font-medium text-gray-600">Personal: £225.41</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center py-2 border-t border-gray-50">
+                    <div>
+                        <h3 class="font-bold text-gray-700">Lorna</h3>
+                        <p class="text-sm text-gray-500">Contribution: £1,331.38</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="block text-sm font-medium text-gray-600">Personal: £90.35</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
+                <h2 class="text-xl font-bold text-gray-800 border-b pb-2">Live Burn Down</h2>
+                
+                <div class="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-100 flex justify-between items-center">
+                    <div>
+                        <p class="text-sm text-blue-800 font-semibold" id="date-display">Day 4 of 31</p>
+                        <p class="text-xs text-blue-600" id="expected-food">Expected Food Left: £435.48</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="inline-block px-3 py-1 bg-green-200 text-green-800 text-xs font-bold rounded-full" id="pacing-badge">🟢 On Track</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="font-semibold text-gray-700">Joint Account</span>
+                        <span class="font-bold text-gray-900" id="joint-current">£2,981.38 left</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-blue-600 h-2.5 rounded-full" id="joint-bar" style="width: 100%"></div>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="font-semibold text-gray-700">Food Budget</span>
+                        <span class="font-bold text-green-600" id="food-remaining">£500.00 left</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-green-500 h-2.5 rounded-full" id="food-bar" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <div class="bg-white rounded-xl shadow-md border border-gray-100 p-6">
+                <h2 class="text-lg font-bold text-gray-800 mb-4">Log a Receipt</h2>
+                <form id="receipt-form" class="space-y-3">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Category</label>
+                            <select id="receipt-category" class="w-full border border-gray-300 rounded p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option value="Food">🛒 Food</option>
+                                <option value="Petrol">⛽ Petrol</option>
+                                <option value="Misc">🛍️ Misc</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Amount (£)</label>
+                            <input type="number" id="receipt-amount" placeholder="0.00" step="0.01" class="w-full border border-gray-300 rounded p-2 text-sm focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium rounded p-2 text-sm shadow transition-colors">Deduct Amount</button>
+                </form>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md border border-gray-100 p-6 border-t-4 border-t-green-500">
+                <h2 class="text-lg font-bold text-gray-800 mb-4">Update Income & Balances</h2>
+                <form id="update-form" class="space-y-3">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">What to update?</label>
+                            <select id="update-type" class="w-full border border-gray-300 rounded p-2 text-sm focus:ring-green-500 focus:border-green-500">
+                                <option value="Income">Add Extra Income</option>
+                                <option value="Joint">Set Joint Bank Balance</option>
+                                <option value="Food">Set Food Cash Left</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">New Value (£)</label>
+                            <input type="number" id="update-amount" placeholder="0.00" step="0.01" class="w-full border border-gray-300 rounded p-2 text-sm focus:ring-green-500 focus:border-green-500" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium rounded p-2 text-sm shadow transition-colors">Apply Update</button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
 
     <script src="script.js"></script>
 </body>
